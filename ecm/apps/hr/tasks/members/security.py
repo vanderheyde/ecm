@@ -119,9 +119,12 @@ def parseOneMemberTitles(member, my_corp):
  
     if 'titles' in member:
         for t in member.titles:
-            title = Title.objects.get(corp=my_corp, titleID=t.titleID)
-            membership = TitleMembership(member_id=member.characterID, title=title)
-            titles[membership] = membership
+            try:
+                title = Title.objects.get(corp=my_corp, titleID=t.titleID)
+                membership = TitleMembership(member_id=member.characterID, title=title)
+                titles[membership] = membership
+            except:
+                LOG.warning('Title with id %d does not exist')
  
     return titles
 
